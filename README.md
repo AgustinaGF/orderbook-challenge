@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Orderbook Viewer Challenge
 
-## Getting Started
+A real-time orderbook viewer built with React and Next.js that consumes the Binance public API.
 
-First, run the development server:
+## 🚀 Quick Start
+
+### Using Docker (Recommended)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker build -t orderbook-challenge .
+docker run -p 3000:3000 orderbook-challenge
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Local Development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+npm run dev
+```
 
-## Learn More
+## 📋 Features
 
-To learn more about Next.js, take a look at the following resources:
+### Core Functionality
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Asset Selector**: Dropdown with 5 trading pairs (BTCUSDT, ETHUSDT, SOLUSDT, BNBUSDT, XRPUSDT)
+- **Orderbook Display**: Shows 10 levels of bids and asks with price and quantity
+- **Live Updates**: Polls Binance API every 1.5 seconds
+- **Error Handling**: Graceful loading and error states
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Bonus Features
 
-## Deploy on Vercel
+- **Spread Indicator**: Shows the difference between best bid and ask (absolute and percentage)
+- **Depth Visualization**: Horizontal bars showing relative volume at each price level
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🏗️ Design Decisions & Trade-offs
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Architecture
+
+- **Custom Hook (`useOrderBook`)**: Encapsulates all data fetching logic, polling, and state management. This separates concerns and makes the hook reusable and testable.
+- **Component Composition**: Split into small, focused components (`OrderBook`, `OrderSide`, `OrderRow`, `AssetSelector`) for better maintainability and reusability.
+
+### Polling vs WebSocket
+
+- Chose **polling** over WebSocket for simplicity and reliability. The 1.5-second interval provides a good balance between data freshness and API rate limits.
+- Trade-off: Slightly higher latency compared to WebSocket, but more straightforward error handling and reconnection logic.
+
+### State Management
+
+- Used React's built-in `useState` and `useCallback` hooks instead of external state management libraries.
+- Trade-off: Simpler setup, but would need to consider more robust solutions (like Zustand or React Query) for larger applications.
+
+### Styling
+
+- Used Tailwind CSS with CSS custom properties for theming (dark mode support).
+- Depth bars use percentage-based widths calculated from the maximum quantity in each side.
+
+### Performance Optimizations
+
+- `useMemo` for computing max quantity to avoid recalculation on every render
+- Refs for interval management to prevent memory leaks
+- State reset on symbol change to ensure clean transitions
+
+## 🛠️ Tech Stack
+
+- **Framework**: React 18+ with Next.js 14+ (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **API**: Binance Public REST API

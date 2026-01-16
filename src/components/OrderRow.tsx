@@ -18,15 +18,12 @@ export function OrderRow({ entry, type, maxQuantity }: OrderRowProps) {
 
 	return (
 		<div className="relative flex items-center justify-between px-3 py-1.5 font-mono text-sm">
-			{/* Barra de profundidad */}
 			<div
 				className={`absolute inset-y-0 ${
 					type === "bid" ? "right-0" : "left-0"
 				} ${bgColor} transition-all duration-300`}
 				style={{ width: `${Math.min(depthPercentage, 100)}%` }}
 			/>
-
-			{/* Contenido */}
 			<span className={`relative z-10 ${textColor}`}>
 				{formatPrice(entry.price)}
 			</span>

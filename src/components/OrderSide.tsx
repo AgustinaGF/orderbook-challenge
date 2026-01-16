@@ -11,12 +11,10 @@ interface OrderSideProps {
 }
 
 export function OrderSide({ entries, type, title }: OrderSideProps) {
-	// Calcular la cantidad máxima para las barras de profundidad
 	const maxQuantity = useMemo(() => {
 		return Math.max(...entries.map((e) => Number.parseFloat(e.quantity)), 0);
 	}, [entries]);
 
-	// Para asks, mostramos en orden inverso (mayor a menor)
 	const displayEntries = type === "ask" ? [...entries].reverse() : entries;
 
 	const titleColor = type === "bid" ? "text-emerald-400" : "text-red-400";
