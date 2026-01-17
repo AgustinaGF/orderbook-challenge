@@ -11,6 +11,8 @@ docker build -t orderbook-challenge .
 docker run -p 3000:3000 orderbook-challenge
 ```
 
+**Note for Linux users:** If you get permission errors, use `sudo` before each command or add your user to the docker group with `sudo usermod -aG docker $USER` and restart your session.
+
 Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### Local Development
